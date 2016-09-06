@@ -4,6 +4,7 @@
     http = require('http'),
     https = require('https'),
     urlparse = require('url').parse,
+    util = require("util"),
     samlRequestTemplate = fs.readFileSync(__dirname+'/SAML.xml', 'utf8');
 
 
@@ -109,6 +110,7 @@ function requestToken(params, callback) {
         res.on('end', function () {
             parseXml(xml, function (js) {
                 // extract token
+                // console.log(util.inspect(js, {showHidden: false, depth: null}));
                 var token = js['S:Envelope']['S:Body'][0]['wst:RequestSecurityTokenResponse'][0]['wst:RequestedSecurityToken'][0]['wsse:BinarySecurityToken'][0]['_'];
 
                 // Now we have the token, we need to submit it to SPO
